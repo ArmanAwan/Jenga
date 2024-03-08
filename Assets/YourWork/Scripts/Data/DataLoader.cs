@@ -6,7 +6,7 @@ namespace Jenga.Data
 {
     public class DataLoader
     {
-        public async Task<StackedSkill[]> LoadStackFromWeb()
+        public static async Task<StackedSkill[]> LoadStackFromWeb()
         {
             const string url = "https://ga1vqcu3o1.execute-api.us-east-1.amazonaws.com/Assessment/stack";
 
@@ -16,12 +16,10 @@ namespace Jenga.Data
             {
                 await Task.Yield();
             }
-
             if (webRequest.result != UnityWebRequest.Result.Success)
             {
                 return null;
             }
-
             StackedSkill[] skills = JsonConvert.DeserializeObject<StackedSkill[]>(webRequest.downloadHandler.text);
             return skills;
         }
