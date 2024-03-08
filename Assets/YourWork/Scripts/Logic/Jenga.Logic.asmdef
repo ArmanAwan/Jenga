@@ -1,0 +1,16 @@
+{
+    "name": "Jenga.Logic",
+    "rootNamespace": "",
+    "references": [
+        "GUID:436e61ef3f1462f4fb8464774de75a5c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
