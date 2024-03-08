@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Jenga.Data;
 using UnityEngine;
 
 namespace Jenga.Logic
@@ -9,7 +11,7 @@ namespace Jenga.Logic
 
         private void CriticalLoad()
         {
-        
+            Task<StackedSkill[]> stackList = DataLoader.LoadStackFromWeb();
         }
     }
 }
