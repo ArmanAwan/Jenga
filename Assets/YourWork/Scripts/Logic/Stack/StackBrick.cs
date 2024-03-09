@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using Jenga.Data;
 using UnityEngine;
 
-public class S : MonoBehaviour
+namespace Jenga.Logic.Stack
 {
-    // Start is called before the first frame update
-    void Start()
+    public class StackBrick : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public BrickInfo BrickInfo { get; set; }
     }
 }

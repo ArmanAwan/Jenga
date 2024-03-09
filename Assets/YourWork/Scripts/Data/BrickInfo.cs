@@ -1,6 +1,6 @@
 ﻿namespace Jenga.Data
 {
-    public class StackedSkill
+    public class BrickInfo
     {
         public int Id { get; set; }
         public string Subject { get; set; }
