@@ -1,3 +1,4 @@
+using System;
 using Jenga.Data;
 using UnityEngine;
 
@@ -5,6 +6,12 @@ namespace Jenga.Logic.Stack
 {
     public class StackBrick : MonoBehaviour
     {
-        public BrickInfo BrickInfo { get; set; }
+        private BrickInfo BrickInfo { get; set; }
+
+        public void Initialize(BrickInfo brickInfo, Material material)
+        {
+            BrickInfo = brickInfo;
+            GetComponent<MeshRenderer>().material = material;
+        }
     }
 }

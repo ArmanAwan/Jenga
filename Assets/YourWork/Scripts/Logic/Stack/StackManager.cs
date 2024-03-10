@@ -12,11 +12,14 @@ namespace Jenga.Logic.Stack
         private StackBrick StackBrickPrefab => _stackBrickPrefab;
 
         [SerializeField]
+        private GradeStack _stackPrefab;
+        private GradeStack StackPrefab => _stackPrefab;
+
+        [SerializeField]
         private Material[] _brickMaterials;
         private Material[] BrickMaterials => _brickMaterials;
 
-
-        private Dictionary<string, List<StackBrick>> Stacks { get; set; } = new();
+        private Dictionary<string, GradeStack> Stacks { get; set; } = new();
 
         public async void BuildStacks()
         {
@@ -28,17 +31,24 @@ namespace Jenga.Logic.Stack
             const float brickHeight = 0.64f;
             const float stackWidth = 10f;
 
+            Transform stacksHolder = new GameObject("StacksHolder").transform;
             int stackIndex = 0;
             foreach (KeyValuePair<string, List<BrickInfo>> stackInfos in sortedBrickInfos)
             {
-                Transform stackHolder = new GameObject($"Stack: {stackIndex}").transform;
-                stackHolder.position = new Vector3(stackWidth * (stackIndex % 2 != 0 ? Mathf.CeilToInt(stackIndex/2f) : Mathf.CeilToInt(-stackIndex / 2f)),0,0);
-                for (int i = 0; i < stackInfos.Value.Count; i++)
+                List<BrickInfo> sortedInfos = stackInfos.Value.OrderBy(info => info.Domain)
+                    .ThenBy(info => info.Cluster)
+                    .ThenBy(info => info.StandardId)
+                    .ToList();
+                Stacks[stackInfos.Key] = Instantiate(StackPrefab, parent: stacksHolder);
+                
+                Stacks[stackInfos.Key].GradeText.text = stackInfos.Key;
+                Stacks[stackInfos.Key].transform.position = new Vector3(stackWidth * (stackIndex % 2 != 0 ? Mathf.CeilToInt(stackIndex/2f) : Mathf.CeilToInt(-stackIndex / 2f)),0,0);
+                for (int i = 0; i < sortedInfos.Count; i++)
                 {
                     float brickPosition = brickWidth * (i % 3) - brickWidth;
                     float brickYPosition = Mathf.FloorToInt(i / 3f) * brickHeight;
 
-                    StackBrick brick = Instantiate(StackBrickPrefab, parent: stackHolder);
+                    StackBrick brick = Instantiate(StackBrickPrefab, parent: Stacks[stackInfos.Key].transform);
 
                     if (Mathf.FloorToInt(i / 3f) % 2 == 0)
                     {
@@ -50,13 +60,8 @@ namespace Jenga.Logic.Stack
                         brick.transform.localPosition = new Vector3(0, brickYPosition, brickPosition);
                     }
 
-                    brick.BrickInfo = stackInfos.Value[i];
-                    if (!Stacks.ContainsKey(brick.BrickInfo.Grade))
-                    {
-                        Stacks[brick.BrickInfo.Grade] = new List<StackBrick>();
-                    }
-
-                    Stacks[brick.BrickInfo.Grade].Add(brick);
+                    brick.Initialize(sortedInfos[i], BrickMaterials[sortedInfos[i].Mastery]);
+                    Stacks[stackInfos.Key].Bricks.Add(brick);
                 }
 
                 stackIndex++;

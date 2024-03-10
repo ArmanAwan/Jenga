@@ -181,6 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stackBrickPrefab: {fileID: 4908431753475456252, guid: bab72ffb4b2ea9e469dc04607e189f99, type: 3}
+  _stackPrefab: {fileID: 9093577275155837552, guid: bcb55f6e44069064eab54f1ecdb0f3e9, type: 3}
   _brickMaterials:
   - {fileID: 2100000, guid: 84acb00d3a4e0f5499743ffa1059680d, type: 2}
   - {fileID: 2100000, guid: afd575ea53e232246870f21a4ac48e22, type: 2}
