@@ -17,6 +17,10 @@ namespace Jenga.Logic.Stack
         [SerializeField]
         private Material[] _brickMaterials;
         private Material[] BrickMaterials => _brickMaterials;
+        [SerializeField]
+        private Material _outlineMaterial;
+        private Material OutlineMaterial => _outlineMaterial;
+        
 
         public static GradeStack[] Stacks { get; private set; }
         
@@ -44,7 +48,7 @@ namespace Jenga.Logic.Stack
                 for (int i = 0; i < sortedInfos.Count; i++)
                 {
                     StackBrick brick = Instantiate(StackBrickPrefab, parent: gradeStacks[stackIndex].transform);
-                    brick.Initialize(sortedInfos[i], BrickMaterials[sortedInfos[i].Mastery]);
+                    brick.Initialize(sortedInfos[i], BrickMaterials[sortedInfos[i].Mastery], OutlineMaterial);
                     gradeStacks[stackIndex].Bricks.Add(brick);
                 }
                 BuildStack(gradeStacks[stackIndex]);

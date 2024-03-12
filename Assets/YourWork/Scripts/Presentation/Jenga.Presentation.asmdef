@@ -2,7 +2,9 @@
     "name": "Jenga.Presentation",
     "rootNamespace": "",
     "references": [
-        "GUID:125f271aaa97f5c48b4371c067559b43"
+        "GUID:125f271aaa97f5c48b4371c067559b43",
+        "GUID:436e61ef3f1462f4fb8464774de75a5c",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
