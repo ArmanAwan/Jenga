@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Jenga.Data;
 using Jenga.Logic.Stack;
@@ -7,12 +8,15 @@ namespace Jenga.Logic
 {
     public class GameManager : MonoBehaviour
     {
+        
+        
         private void Start() =>
             CriticalLoad();
 
-        private void CriticalLoad()
+        private async Task CriticalLoad()
         {
-            GetComponent<StackManager>().BuildStacks();
+            await GetComponent<StackManager>().InitializeStacks();
+            CameraController.ResetView();
         }
     }
 }
