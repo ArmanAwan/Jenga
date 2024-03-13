@@ -31,6 +31,10 @@ public class UserInterfaceManager : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TestStackGame.TestStack();
+        }
         if (!Input.GetMouseButtonDown(0)) return;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << 6))
@@ -46,6 +50,7 @@ public class UserInterfaceManager : MonoBehaviour
         }
         SelectedBrick = stackBrick;
         BrickInfo info =  stackBrick.SetSelected(true);
-        BlockInfo.text = info.StandardDescription;
+        BlockInfo.text = $"{info.Grade}: {info.Domain}\n{info.Cluster}\n{info.StandardId}: {info.StandardDescription}";
+
     }
 }

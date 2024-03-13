@@ -57,6 +57,11 @@ namespace Jenga.Logic.Stack
             Stacks = gradeStacks.ToArray();
         }
 
+        public static void BuildStack(int stackIndex)
+        {
+            BuildStack(Stacks[stackIndex]);
+        }
+
         private static void BuildStack(GradeStack stack)
         {
             const float brickWidth = 1.25f;
@@ -75,6 +80,7 @@ namespace Jenga.Logic.Stack
                 else
                 {
                     stack.Bricks[i].transform.localPosition = new Vector3(0, brickYPosition, brickPosition);
+                    stack.Bricks[i].transform.rotation = Quaternion.Euler(0, 0, 0);
                 }
             }
         }

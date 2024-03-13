@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Jenga.Logic;
 using Jenga.Logic.Stack;
 using UnityEngine;
 
@@ -21,13 +22,6 @@ public class CameraController : MonoBehaviour
         set => _orbitHeight = Mathf.Clamp(value, 0f, 10f);
     }
 
-    private static int _stackIndex;
-    private static int StackIndex
-    {
-        get => _stackIndex;
-        set => _stackIndex = value < 0 ? StackManager.Stacks.Length - 1 : value % StackManager.Stacks.Length;
-    }
-
     private static Vector3 TargetPosition { get; set; }
     private static Vector3 TargetLerpPoint { get; set; }
     private static Vector3 CameraLerpPoint { get; set; }
@@ -42,12 +36,12 @@ public class CameraController : MonoBehaviour
     }
 
     public static void SetStack(bool nextStack) =>
-        SwitchOrbit(nextStack ? StackIndex + 1 : StackIndex - 1);
+        SwitchOrbit(nextStack ? GameManager.StackIndex + 1 : GameManager.StackIndex - 1);
 
     private static void SwitchOrbit(int newStackIndex)
     {
-        StackIndex = newStackIndex;
-        TargetLerpPoint = StackManager.GetStackCentre(newStackIndex);
+        GameManager.StackIndex = newStackIndex;
+        TargetLerpPoint = StackManager.GetStackCentre(GameManager.StackIndex);
         CameraLerpPoint = TargetLerpPoint + (CameraLerpPoint - TargetPosition);
     }
 
