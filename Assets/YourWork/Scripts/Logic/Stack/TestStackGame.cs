@@ -1,38 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using Jenga.Logic;
 using Jenga.Logic.Stack;
-using UnityEngine;
 
-public class TestStackGame
+namespace Jenga.Logic.Stack
 {
-    private static int? FallenStackIndex { get; set; }
-
-    public static void TestStack()
+    public static class TestStackGame
     {
-        if (FallenStackIndex == null)
+        private static int? FallenStackIndex { get; set; }
+
+        public static void TestStack()
         {
-            foreach (StackBrick brick in StackManager.Stacks[GameManager.StackIndex].Bricks)
+            if (FallenStackIndex == null)
             {
-                brick.TestBrick(false);
+                foreach (StackBrick brick in StackManager.Stacks[GameManager.StackIndex].Bricks)
+                {
+                    brick.TestBrick(false);
+                }
+
+                FallenStackIndex = GameManager.StackIndex;
+                return;
             }
 
-            FallenStackIndex = GameManager.StackIndex;
-            return;
+            ResetStack();
         }
 
-        ResetStack();
-    }
-
-    public static void ResetStack()
-    {
-        if (FallenStackIndex == null) return;
-        foreach (StackBrick brick in StackManager.Stacks[FallenStackIndex.Value].Bricks)
+        public static void ResetStack()
         {
-            brick.TestBrick(true);
-        }
+            if (FallenStackIndex == null) return;
+            foreach (StackBrick brick in StackManager.Stacks[FallenStackIndex.Value].Bricks)
+            {
+                brick.TestBrick(true);
+            }
 
-        StackManager.BuildStack(FallenStackIndex.Value);
-        FallenStackIndex = null;
+            StackManager.BuildStack(FallenStackIndex.Value);
+            FallenStackIndex = null;
+        }
     }
 }

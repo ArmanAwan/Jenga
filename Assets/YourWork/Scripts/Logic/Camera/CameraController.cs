@@ -8,26 +8,19 @@ public class CameraController : MonoBehaviour
 {
     private const float CameraMoveSpeed = 25f;
 
-    private float _zoomDistance = 25f;
-    private float ZoomDistance
+    private static float _zoomDistance = 25f;
+    private static float ZoomDistance
     {
         get => _zoomDistance;
         set => _zoomDistance = Mathf.Clamp(value, 4f, 35f);
-    }
-
-    private float _orbitHeight;
-    private float OrbitHeight
-    {
-        get => _orbitHeight;
-        set => _orbitHeight = Mathf.Clamp(value, 0f, 10f);
     }
 
     private static Vector3 TargetPosition { get; set; }
     private static Vector3 TargetLerpPoint { get; set; }
     private static Vector3 CameraLerpPoint { get; set; }
 
-    private bool IsDragging { get; set; }
-    private Vector3 LastMousePosition { get; set; }
+    private static bool IsDragging { get; set; }
+    private static Vector3 LastMousePosition { get; set; }
 
     public static void ResetView()
     {
@@ -40,6 +33,7 @@ public class CameraController : MonoBehaviour
 
     private static void SwitchOrbit(int newStackIndex)
     {
+        TestStackGame.ResetStack();
         GameManager.StackIndex = newStackIndex;
         TargetLerpPoint = StackManager.GetStackCentre(GameManager.StackIndex);
         CameraLerpPoint = TargetLerpPoint + (CameraLerpPoint - TargetPosition);
@@ -51,12 +45,11 @@ public class CameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, CameraLerpPoint, Time.deltaTime * CameraMoveSpeed);
         TargetPosition = Vector3.Lerp(TargetPosition, TargetLerpPoint, Time.deltaTime * CameraMoveSpeed);
         ChangeStack();
-        ChangeZoom();
-        ChangeHeight();
+        ChangeZoom(Time.deltaTime * 20f);
         ChangeOrbit();
     }
 
-    static void ChangeStack()
+    private static void ChangeStack()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -69,34 +62,17 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void ChangeZoom()
+    public static void ChangeZoom(float zoomAmount)
     {
-        const float zoomSpeed = 20f;
         if (Input.GetKey(KeyCode.W))
         {
-            ZoomDistance -= Time.deltaTime * zoomSpeed;
+            ZoomDistance -= zoomAmount;
             UpdateLerpPosition();
         }
 
         if (Input.GetKey(KeyCode.S))
         {
-            ZoomDistance += Time.deltaTime * zoomSpeed;
-            UpdateLerpPosition();
-        }
-    }
-
-    private void ChangeHeight()
-    {
-        const float changeSpeed = 20f;
-        if (Input.GetKey(KeyCode.Q))
-        {
-            OrbitHeight -= Time.deltaTime * changeSpeed;
-            UpdateLerpPosition();
-        }
-
-        if (Input.GetKey(KeyCode.E))
-        {
-            OrbitHeight += Time.deltaTime * changeSpeed;
+            ZoomDistance += zoomAmount;
             UpdateLerpPosition();
         }
     }
@@ -127,10 +103,10 @@ public class CameraController : MonoBehaviour
         LastMousePosition = Input.mousePosition;
     }
 
-    private void UpdateLerpPosition()
+    private static void UpdateLerpPosition()
     {
         Vector3 direction = (CameraLerpPoint - TargetPosition).normalized;
         Vector3 offsetPosition = TargetPosition + direction * ZoomDistance;
-        CameraLerpPoint =  offsetPosition;
+        CameraLerpPoint = offsetPosition;
     }
 }
