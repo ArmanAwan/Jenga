@@ -1,8 +1,10 @@
 using Jenga.Data;
+using Jenga.Logic.Camera;
 using Jenga.Logic.Stack;
 using ThirdParty.Misc;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Jenga.Presentation
@@ -32,9 +34,9 @@ namespace Jenga.Presentation
         private void Start()
         {
             SetDefaultInformation();
-            const float zoomAmount = 200f;
-            Buttons[ButtonType.ZoomIn].onClick.AddListener(() => CameraController.ChangeZoom(zoomAmount));
-            Buttons[ButtonType.ZoomOut].onClick.AddListener(() => CameraController.ChangeZoom(-zoomAmount));
+            const float zoomChange = 2.5f;
+            Buttons[ButtonType.ZoomIn].onClick.AddListener(() => CameraController.ChangeZoom(zoomChange));
+            Buttons[ButtonType.ZoomOut].onClick.AddListener(() => CameraController.ChangeZoom(-zoomChange));
             Buttons[ButtonType.StackRight].onClick.AddListener(() => CameraController.SetStack(true));
             Buttons[ButtonType.StackLeft].onClick.AddListener(() => CameraController.SetStack(false));
             Buttons[ButtonType.TestStack].onClick.AddListener(TestStackGame.TestStack);
@@ -48,7 +50,7 @@ namespace Jenga.Presentation
                 SelectedBrick.SetSelected(false);
             }
 
-            BlockInfo.text = "Please select Brick for more information";
+            BlockInfo.text = "Please click a brick to see more information\nUse the right mouse button to orbit\nOther controls can be clicked in the top left, our used via the keyboard";
         }
 
         private void Update()
@@ -60,7 +62,7 @@ namespace Jenga.Presentation
 
             if (!Input.GetMouseButtonDown(0)) return;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << 6))
+            if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << 6) || EventSystem.current.IsPointerOverGameObject())
             {
                 SetDefaultInformation();
                 return;

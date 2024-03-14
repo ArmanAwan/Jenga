@@ -65,7 +65,7 @@ namespace Jenga.Logic.Stack
         private static void BuildStack(GradeStack stack)
         {
             const float brickWidth = 1.25f;
-            const float brickHeight = 0.64f;
+            const float brickHeight = 0.62f;
             
             for (int i = 0; i < stack.Bricks.Count; i++)
             {
